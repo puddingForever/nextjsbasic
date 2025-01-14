@@ -10,7 +10,7 @@ interface SnippetShowPageProps {
 }
 
 export default async function SnippetShowPage(props : SnippetShowPageProps){
-    await new Promise((r) => setTimeout(r,1000))
+    await new Promise((r) => setTimeout(r,1000)) // 운영모드에서는 캐시화가 되니까 pause되지 않는다 
     const snippet = await db.snippet.findFirst({
         where : { id : parseInt(props.params.id) }
     });
@@ -34,4 +34,15 @@ export default async function SnippetShowPage(props : SnippetShowPageProps){
             <code>{snippet.code}</code>
          </pre>
         </div>
+}
+
+// called automatically 
+export async function generateStaticParams(){
+    const snippets = await db.snippet.findMany();
+
+    return snippets.map((snippet) => {
+        return {
+            id : snippet.id.toString()
+        }
+    })
 }
