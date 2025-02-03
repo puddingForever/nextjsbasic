@@ -47,3 +47,24 @@ Yes, in the context of OAuth authentication with NextAuth.js, the clientId refer
 In this setup, the "client" is typically your Next.js application. When a user attempts to sign in via GitLab, your Next.js app (acting as the client) will send a request to GitLab’s OAuth endpoint, including the clientId and clientSecret (which are used to authenticate your app with GitLab). GitLab then verifies the request and either redirects the user to the authentication page or returns a token, which your Next.js app will use to authenticate the user.
 
 So, yes, your Next.js app is the "client" in this OAuth flow, and the clientId is part of the request to authenticate and authorize the app with GitLab.
+
+# How to push my main branch to other remote branch(auth)
+
+1. push to auth branch (push main to auth branch )
+   git push origin(remotename) main:auth
+2. Make the branch name same also track it
+   git checkout -b auth --track origin/auth
+3. check upstream
+   git branch -vv
+4. check current branch
+   git branch (local) , git branch -r(remote)
+5. where am i connected?
+   git remote -v
+
+- SessionProvider
+  useSession contains always the obj , so wee need to do session.data?.user
+
+# Path helper function to route easily !!
+
+- 1. Routing 표로 정리하기 , pagename , path , data shown
+- 2. path.ts 에 path를 정렬한다
