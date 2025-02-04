@@ -68,3 +68,43 @@ So, yes, your Next.js app is the "client" in this OAuth flow, and the clientId i
 
 - 1. Routing 표로 정리하기 , pagename , path , data shown
 - 2. path.ts 에 path를 정렬한다
+
+# home page became dynamic ?
+
+- layout.tsx를 감싸는 header 에 async 들어가는 함수를 전역으로 쓰기 때문에 home도 dynamic 라우팅이 되버렸다
+- auth 가 시작되면 cookie를 건들기 때문에 , 라우팅이 dynamic이 되버림. 근데 static은 그대로 냅둬야함
+- 즉 authentication은 유지한채 , 라우팅은 static으로 유지되게 해야됨
+  해결법
+- header 컴포넌트를 클라이언트 컴포넌트로 만든다.
+- useSession은 cookie를 바로 접근하지 않음. 백앤드가 auth 상태를 알수 있게 request만 보냄!
+- header 컴포넌트를 그냥 두고 , useSession 로직있는 부분은 따로 컴포넌트로 뺴는 듯 하다.
+- gotcha !!!!!!!! useSession 이 백앤드에 요청을 하기 전까지는 , authentication이 진행되지 않음
+- 브라우저가 최초 로딩될떄는 , user가 signedin 이 되어도 signout 된 모습으로 잠깐 보임 (브라우저는 유저가 로그인한지 아직 모르니까
+  useSession 이 요청하는게 브라우저 처음 로딩시간보다 느림)
+- session.status 로 로딩상태인지 확인한다.
+
+# zod 라이브러리
+
+- validation of inputs in form
+- 에러처리 스키마로 처리함 ! 초간단...
+
+# useFormState는 client컴포넌트랑 서버컴포넌트 모두 메시지의 타입이 맞아야함
+
+```
+const [formState,action] = useFormState(actions.createTopic,5); //formstate number type
+```
+
+```
+export async function createTopic(formState : number,formData:FormData){  formstate 도 number type
+    const result = createTopicSchema.safeParse({
+        name : formData.get('name'),
+        description : formData.get('description')
+
+    })
+
+    if(!result.success){
+        console.log(result.error.flatten().fieldErrors)
+    }
+
+    return 10; // return formstate as number type
+```
