@@ -1,2 +1,7 @@
 compatibility_flags = ["nodejs_compat"]
 compatibility_date = "2025-02-15"
+
+[[d1_databases]]
+binding="DB"
+database_name="d1-test"
+database_id="a18787f8-67b2-4144-ac51-474e93a88041"
